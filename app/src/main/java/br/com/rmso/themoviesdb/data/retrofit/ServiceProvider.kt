@@ -1,5 +1,6 @@
-package br.com.rmso.themoviesdb.remote
+package br.com.rmso.themoviesdb.data.retrofit
 
+import br.com.rmso.themoviesdb.data.api.MovieService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -15,5 +16,5 @@ object ServiceProvider {
         .addConverterFactory(Json.asConverterFactory(mediaType))
         .build()
 
-    val service: MovieAPI = retrofit.create(MovieAPI::class.java)
+    internal val service = retrofit.create(MovieService::class.java)
 }

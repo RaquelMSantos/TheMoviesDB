@@ -1,10 +1,10 @@
-package br.com.rmso.themoviesdb.remote
+package br.com.rmso.themoviesdb.data.model.response
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieResponse(
+internal data class MovieResponse(
     @SerialName("adult") val adult: Boolean,
     @SerialName("backdrop_path") val backdropPath: String,
     @SerialName("genre_ids") val genreIds: List<Int>,
@@ -21,11 +21,5 @@ data class MovieResponse(
     @SerialName("vote_count") val voteCount: Int
 )
 
-@Serializable
-data class BaseResponse<out T>(
-    @SerialName("page") val page: Int,
-    @SerialName("results") val results: T,
-    @SerialName("total_pages") val totalPages: Int,
-    @SerialName("total_results") val totalResults: Int
-)
+
 
