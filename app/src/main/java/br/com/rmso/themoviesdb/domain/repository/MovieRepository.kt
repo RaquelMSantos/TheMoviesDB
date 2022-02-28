@@ -1,7 +1,7 @@
 package br.com.rmso.themoviesdb.domain.repository
 
-import br.com.rmso.themoviesdb.domain.entity.MovieBaseEntity
+import br.com.rmso.themoviesdb.domain.entity.MovieEntity
 
 internal interface MovieRepository {
-    suspend fun getMovie(tmdbToken: String): MovieBaseEntity
+    suspend fun getMovie(): List<MovieEntity>
 }

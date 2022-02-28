@@ -1,15 +1,16 @@
 package br.com.rmso.themoviesdb.presentation
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import br.com.rmso.themoviesdb.domain.mapper.MovieMapper
+import androidx.lifecycle.*
 import br.com.rmso.themoviesdb.domain.usecase.GetMovieUseCase
+import br.com.rmso.themoviesdb.presentation.model.Movie
 import kotlinx.coroutines.launch
 
 internal class MovieViewModel(
     private val getMovieUseCase: GetMovieUseCase,
-    private val movieMapper: MovieMapper
 ) : ViewModel() {
+
+    private val _movies = MutableLiveData<List<Movie>>()
+    val movies = _movies as LiveData<List<Movie>>
 
     init {
         getMovies()
@@ -17,16 +18,15 @@ internal class MovieViewModel(
 
     private fun getMovies() {
         viewModelScope.launch {
-            getMovieUseCase("")
-                .runCatching {
-
+            getMovieUseCase().onSuccess {
+                val movies: List<Movie> = it.map { movieEntity ->
+                    Movie(movieEntity)
                 }
-                .onSuccess {
 
-                }
-                .onFailure {
+                _movies.postValue(movies)
+            }.onFailure {
 
-                }
+            }
         }
     }
 }

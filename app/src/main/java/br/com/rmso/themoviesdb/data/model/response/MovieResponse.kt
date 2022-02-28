@@ -1,5 +1,6 @@
 package br.com.rmso.themoviesdb.data.model.response
 
+import br.com.rmso.themoviesdb.domain.entity.MovieEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,6 +20,23 @@ internal data class MovieResponse(
     @SerialName("video") val video: Boolean,
     @SerialName("vote_average") val voteAverage: Double,
     @SerialName("vote_count") val voteCount: Int
+)
+
+internal fun MovieResponse.toDomain() = MovieEntity(
+    adult = adult,
+    backdropPath = backdropPath,
+    genreIds = genreIds,
+    id = id,
+    originalLanguage = originalLanguage,
+    originalTitle = originalTitle,
+    overview = overview,
+    popularity = popularity,
+    posterPath = posterPath,
+    releaseDate = releaseDate,
+    title = title,
+    video = video,
+    voteAverage = voteAverage,
+    voteCount = voteCount
 )
 
 
