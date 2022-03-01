@@ -3,6 +3,7 @@ package br.com.rmso.themoviesdb.presentation.model
 import br.com.rmso.themoviesdb.domain.entity.MovieEntity
 
 internal data class Movie(
+    val id: Int,
     val backdropPath: String,
     val overview: String,
     val popularity: Double,
@@ -13,6 +14,7 @@ internal data class Movie(
     val voteAverage: Double
 ) {
     constructor(movie: MovieEntity) : this(
+        id = movie.id,
         backdropPath = movie.backdropPath,
         overview = movie.overview,
         popularity = movie.popularity,
