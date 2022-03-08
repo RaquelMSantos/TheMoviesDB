@@ -11,7 +11,7 @@ internal class MovieAdapter: ListAdapter<Movie, MoviesViewHolder>(MovieDiffCallb
     }
 
     override fun onBindViewHolder(holder: MoviesViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        holder.bind(currentList[position], holder.itemView.context)
     }
 
 }

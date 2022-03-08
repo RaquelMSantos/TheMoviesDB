@@ -14,8 +14,8 @@ internal class MovieRepositoryImpl(
 ) : MovieRepository {
     override suspend fun getMovie(): List<MovieEntity> =
         withContext(dispatcher) {
-            remoteDataSource.getMovies().results.map { movieResponse ->
-                movieResponse.toDomain()
+            remoteDataSource.getMovies().results.map {
+                it.toDomain()
             }
         }
 }

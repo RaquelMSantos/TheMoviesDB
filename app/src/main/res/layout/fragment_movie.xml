@@ -6,25 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MovieFragment">
 
-    <TextView
-        android:id="@+id/movieTitle"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/moviesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:textStyle="bold"
-        android:gravity="center_horizontal"
-        android:text="Título Teste"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/moviesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieTitle"
         tools:listitem="@layout/list_item_movie"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

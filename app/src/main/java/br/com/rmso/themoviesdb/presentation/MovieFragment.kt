@@ -1,25 +1,29 @@
 package br.com.rmso.themoviesdb.presentation
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import br.com.rmso.themoviesdb.databinding.FragmentMovieBinding
 import br.com.rmso.themoviesdb.presentation.adapter.MovieAdapter
-import br.com.rmso.themoviesdb.presentation.model.Movie
-import org.koin.android.ext.android.inject
+import br.com.rmso.themoviesdb.presentation.model.ViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
 
     private val viewModel by viewModel<MovieViewModel>()
-    private val adapter: MovieAdapter by inject()
+    private val movieAdapter by lazy { MovieAdapter() }
     private lateinit var binding: FragmentMovieBinding
 
     companion object {
         fun newInstance() = MovieFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getMovies()
     }
 
     override fun onCreateView(
@@ -33,25 +37,31 @@ class MovieFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
-        setupObserver()
+        setupObservers()
     }
 
     private fun setupRecyclerView() {
-        binding.moviesRecyclerView.adapter = adapter
+        with(binding.moviesRecyclerView) {
+            adapter = movieAdapter
+            layoutManager = GridLayoutManager(context, 2)
+        }
     }
 
-    private fun setupObserver() {
-        viewModel.movies.observe(viewLifecycleOwner, Observer { movies ->
-            adapter.submitList(movies)
-        })
+    private fun setupObservers() {
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
+            movieAdapter.submitList(movies)
+        }
+
+        viewModel.viewState.observe(viewLifecycleOwner) { state ->
+            setViewState(state)
+        }
     }
 
-    private fun setViewState(list: List<Movie>) {
-        TODO("Not yet implemented")
-      /*  when(list) {
-            State.LOADING -> showLoading()
-            State.SUCCESS -> showContent(list)
-            State.ERROR -> showError()
-        } */
+    private fun setViewState(state: ViewState) {
+          /*when(state) {
+              ViewState.LOADING -> showLoading()
+              ViewState.SUCCESS -> showContent()
+              ViewState.ERROR -> showError()
+          } */
     }
 }
