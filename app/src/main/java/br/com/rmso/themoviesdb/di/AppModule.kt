@@ -1,5 +1,4 @@
 package br.com.rmso.themoviesdb.di
-import br.com.rmso.themoviesdb.data.datasource.remote.MovieRemoteDataSource
 import br.com.rmso.themoviesdb.data.datasource.remote.MovieRemoteDataSourceImpl
 import br.com.rmso.themoviesdb.data.repository.MovieRepositoryImpl
 import br.com.rmso.themoviesdb.data.retrofit.ServiceProvider

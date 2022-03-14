@@ -6,5 +6,5 @@ import retrofit2.http.Query
 
 internal interface MovieService {
     @GET("discover/movie")
-    suspend fun getMovies(@Query("api_key") token: String): MovieBaseResponse
+    suspend fun getMovies(): MovieBaseResponse
 }
