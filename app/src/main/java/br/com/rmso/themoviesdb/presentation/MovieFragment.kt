@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.rmso.themoviesdb.databinding.FragmentMovieBinding
 import br.com.rmso.themoviesdb.presentation.adapter.MovieAdapter
-import br.com.rmso.themoviesdb.presentation.model.ViewState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment() {
@@ -19,11 +18,6 @@ class MovieFragment : Fragment() {
 
     companion object {
         fun newInstance() = MovieFragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getMovies()
     }
 
     override fun onCreateView(
@@ -57,7 +51,7 @@ class MovieFragment : Fragment() {
         }
     }
 
-    private fun setViewState(state: ViewState) {
+    private fun setViewState(state: Result<Boolean>) {
           /*when(state) {
               ViewState.LOADING -> showLoading()
               ViewState.SUCCESS -> showContent()

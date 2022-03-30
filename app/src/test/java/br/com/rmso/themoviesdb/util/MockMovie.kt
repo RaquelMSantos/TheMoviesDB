@@ -3,6 +3,7 @@ package br.com.rmso.themoviesdb.util
 import br.com.rmso.themoviesdb.data.model.response.MovieBaseResponse
 import br.com.rmso.themoviesdb.data.model.response.MovieResponse
 import br.com.rmso.themoviesdb.domain.entity.MovieEntity
+import br.com.rmso.themoviesdb.presentation.model.Movie
 
 internal fun mockMovieBaseResponse(): MovieBaseResponse {
     return MovieBaseResponse(
@@ -45,6 +46,22 @@ internal fun mockListMovieEntity(): List<MovieEntity> {
             video = false,
             voteAverage = 8.3,
             voteCount = 9461
+        )
+    )
+}
+
+internal fun mockListMovie(): List<Movie> {
+    return listOf(
+        Movie(
+            backdropPath = "/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
+            id = 634649,
+            overview = "Peter Paker is unmasked",
+            popularity = 10552.0,
+            posterPath = "/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
+            releaseDate = "2021-12-15",
+            title = "Spider-Man: No Way Home",
+            video = false,
+            voteAverage = 8.3
         )
     )
 }

@@ -6,16 +6,16 @@ import br.com.rmso.themoviesdb.domain.entity.MovieEntity
 import br.com.rmso.themoviesdb.domain.repository.MovieRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 internal class MovieRepositoryImpl(
     private val remoteDataSource: MovieRemoteDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MovieRepository {
-    override suspend fun getMovies(): List<MovieEntity> =
-        withContext(dispatcher) {
-            remoteDataSource.getMovies().results.map {
-                it.toDomain()
-            }
-        }
+    override fun getMovies(): Flow<List<MovieEntity>> =
+        remoteDataSource.getMovies()
+            .map { movieResponse -> movieResponse.results.map { it.toDomain() } }
+            .flowOn(dispatcher)
 }

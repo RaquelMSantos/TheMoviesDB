@@ -1,19 +1,13 @@
 package br.com.rmso.themoviesdb.data.datasource.remote
 
-import br.com.rmso.themoviesdb.data.model.response.MovieBaseResponse
+import app.cash.turbine.test
 import br.com.rmso.themoviesdb.data.retrofit.ServiceProvider
-import br.com.rmso.themoviesdb.exception.MovieException
-import br.com.rmso.themoviesdb.presentation.model.Movie
 import br.com.rmso.themoviesdb.util.mockMovieBaseResponse
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.runBlocking
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Assert.*
 import org.junit.Test
-import java.lang.Exception
 import kotlin.time.ExperimentalTime
 
 @ExperimentalTime
@@ -32,19 +26,23 @@ internal class MovieRemoteDataSourceImplTest {
         val result = remoteDataSource.getMovies()
 
         //Then
-        coVerify { serviceProvider.service.getMovies() }
-        assertEquals(expectedResult, result)
+        result.test {
+            assertEquals(expectedResult, awaitItem())
+            awaitComplete()
+        }
     }
 
-    @Test(expected = MovieException::class)
-    fun `getMovies Should return throwable When service is failure`() {
-        runBlocking {
-            //Given
-            val expectedException = MovieException()
-            coEvery { serviceProvider.service.getMovies() } throws expectedException
+    @Test
+    fun `getMovies Should return throwable When service is failure`() = runBlocking {
+        //Given
+        coEvery { serviceProvider.service.getMovies() } throws Throwable()
 
-            //When
-            remoteDataSource.getMovies()
+        //When
+        val result = remoteDataSource.getMovies()
+
+        //Then
+        result.test {
+            assertEquals(Throwable::class.java, awaitError()::class.java)
         }
     }
 }

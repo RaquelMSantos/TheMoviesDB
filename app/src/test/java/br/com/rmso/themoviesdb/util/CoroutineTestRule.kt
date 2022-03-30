@@ -1,4 +1,4 @@
-package br.com.rmso.themoviesdb.data
+package br.com.rmso.themoviesdb.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

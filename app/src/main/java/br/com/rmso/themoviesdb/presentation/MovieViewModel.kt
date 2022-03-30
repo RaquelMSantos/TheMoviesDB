@@ -1,34 +1,51 @@
 package br.com.rmso.themoviesdb.presentation
 
 import androidx.lifecycle.*
+import br.com.rmso.themoviesdb.domain.entity.MovieEntity
 import br.com.rmso.themoviesdb.domain.usecase.GetMovieUseCase
 import br.com.rmso.themoviesdb.presentation.model.Movie
-import br.com.rmso.themoviesdb.presentation.model.ViewState
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 internal class MovieViewModel(
     private val getMovieUseCase: GetMovieUseCase,
 ) : ViewModel() {
 
+    init {
+        getMovies()
+    }
+
     private val _movies = MutableLiveData<List<Movie>>()
     val movies = _movies as LiveData<List<Movie>>
 
-    private val _viewState = MutableLiveData<ViewState>()
-    val viewState: LiveData<ViewState> = _viewState
+    private val _viewState =
+        MutableLiveData<Result<Boolean>>().apply { value = Result.success(false) }
+    val viewState: LiveData<Result<Boolean>>
+        get() = _viewState
 
     fun getMovies() {
-        _viewState.postValue(ViewState.LOADING)
-
         viewModelScope.launch {
-            getMovieUseCase().onSuccess {
-                _movies.postValue(it.map { movieEntity ->
-                    Movie(movieEntity)
-                })
-
-                _viewState.postValue(ViewState.SUCCESS)
-            }.onFailure {
-                _viewState.postValue(ViewState.ERROR)
-            }
+            getMovieUseCase()
+                .onStart { showLoading() }
+                .catch {
+                    _viewState.postValue(Result.failure(it))
+                }
+                .onCompletion { hideLoading() }
+                .collect { showMoviesSuccess(it) }
         }
+    }
+
+    private fun hideLoading() { }
+
+    private fun showLoading() { }
+
+    private fun showMoviesSuccess(listMovie: List<MovieEntity>) {
+        _movies.postValue(listMovie.map { movieEntity ->
+            Movie(movieEntity)
+        })
+        _viewState.postValue(Result.success(true))
     }
 }

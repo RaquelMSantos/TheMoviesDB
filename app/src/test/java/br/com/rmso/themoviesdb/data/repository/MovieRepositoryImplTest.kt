@@ -1,18 +1,23 @@
 package br.com.rmso.themoviesdb.data.repository
 
-import br.com.rmso.themoviesdb.data.CoroutinesTestRule
+import app.cash.turbine.test
+import br.com.rmso.themoviesdb.util.CoroutinesTestRule
 import br.com.rmso.themoviesdb.data.datasource.remote.MovieRemoteDataSource
 import br.com.rmso.themoviesdb.util.mockListMovieEntity
 import br.com.rmso.themoviesdb.util.mockMovieBaseResponse
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
+@ExperimentalTime
 internal class MovieRepositoryImplTest {
 
     @get:Rule
@@ -26,12 +31,15 @@ internal class MovieRepositoryImplTest {
     fun `getMovies Should return List of MovieEntity When data source return success`() = runBlocking {
         //Given
         val expectedResult = mockListMovieEntity()
-        coEvery { remoteDataSource.getMovies() } returns mockMovieBaseResponse()
+        every { remoteDataSource.getMovies() } returns flow {emit(mockMovieBaseResponse()) }
 
         //When
         val result = repository.getMovies()
 
         //Then
-        assertEquals(expectedResult, result)
+        result.test {
+            assertEquals(expectedResult, awaitItem())
+            awaitComplete()
+        }
     }
 }
