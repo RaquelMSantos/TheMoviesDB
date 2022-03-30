@@ -12,7 +12,7 @@ internal class MovieRepositoryImpl(
     private val remoteDataSource: MovieRemoteDataSource,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : MovieRepository {
-    override suspend fun getMovie(): List<MovieEntity> =
+    override suspend fun getMovies(): List<MovieEntity> =
         withContext(dispatcher) {
             remoteDataSource.getMovies().results.map {
                 it.toDomain()

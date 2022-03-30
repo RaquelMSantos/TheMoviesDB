@@ -6,9 +6,9 @@ import br.com.rmso.themoviesdb.domain.repository.MovieRepository
 internal class GetMovieUseCase(private val repository: MovieRepository) {
     suspend operator fun invoke(): Result<List<MovieEntity>> {
         return try {
-            Result.success(repository.getMovie())
-        } catch (exception: Throwable) {
-            Result.failure(exception)
+            Result.success(repository.getMovies())
+        } catch (throwable: Throwable) {
+            Result.failure(throwable)
         }
     }
 }

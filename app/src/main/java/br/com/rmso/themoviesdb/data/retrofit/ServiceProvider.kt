@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
 
-class ServiceProvider() {
+class ServiceProvider {
     private val baseUrl = "https://api.themoviedb.org/3/"
     private val contentType = "application/json".toMediaType()
     private val json = Json {
