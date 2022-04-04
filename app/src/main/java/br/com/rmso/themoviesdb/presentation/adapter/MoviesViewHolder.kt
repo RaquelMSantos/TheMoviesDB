@@ -16,13 +16,18 @@ internal class MoviesViewHolder(private val listItemMovieBinding: ListItemMovieB
     RecyclerView.ViewHolder(listItemMovieBinding.root) {
 
     fun bind(movie: Movie, context: Context) {
-        listItemMovieBinding.titleTextView.text = movie.title
-        Glide
-            .with(context)
-            .load(basePosterUrl + movie.posterPath)
-            .centerCrop()
-            .placeholder(R.drawable.ic_launcher_foreground)
-            .into(listItemMovieBinding.postImageView)
+        with(listItemMovieBinding) {
+            titleTextView.text = movie.title
+            dateTextView.text = movie.releaseDate
+            voteAverageTextView.text = movie.voteAverage.toString()
+
+            Glide
+                .with(context)
+                .load(basePosterUrl + movie.posterPath)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(postImageView)
+        }
     }
 
     companion object {
